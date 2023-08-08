@@ -2,17 +2,31 @@
 import { useParams } from "next/navigation";
 import { products } from "../../data/products";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { useContext } from "react";
+import {Store} from "../../utils/Store"
 
 function Product() {
   const params = useParams();
+  const { state, dispatch } = useContext(Store);
   const productId = params.id;
+  const router = useRouter();
   const product = products.find((product) => product.id == productId);
   const [selectedImage, setSelectedImage] = useState(product.thumbnail);
+
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
   };
-  console.log(product);
+  // console.log(product);
+  const addToCartHandler = async (e) => {
+    e.preventDefault();
+    const quantity = 1;
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+    console.log(state);
+    router.push('/cart');
+  };
+
 
   return (
     <>
@@ -168,7 +182,8 @@ function Product() {
                 <form className="mt-6">
                   <div className="mt-10 flex">
                     <button
-                      type="submit"
+                      onClick={addToCartHandler}
+                      // type="submit"
                       className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                     >
                       Add to cart
