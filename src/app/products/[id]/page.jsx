@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useContext } from "react";
 import {Store} from "../../utils/Store"
+import { toast } from "react-toastify";
 
 function Product() {
   const params = useParams();
@@ -13,6 +14,9 @@ function Product() {
   const router = useRouter();
   const product = products.find((product) => product.id == productId);
   const [selectedImage, setSelectedImage] = useState(product.thumbnail);
+  const {
+    cart: { cartItems },
+  } = state; 
 
 
   const handleImageClick = (image) => {
@@ -21,9 +25,13 @@ function Product() {
   // console.log(product);
   const addToCartHandler = async (e) => {
     e.preventDefault();
-    const quantity = 1;
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
-    console.log(state);
+    if(cartItems.find((item) => item.id === product.id)){
+      toast.info("Item already in cart",{autoClose: 1000,});
+    }else{
+      const quantity = 1;
+      dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+      toast.success("Item added to cart",{autoClose: 1000,});
+    }
     router.push('/cart');
   };
 

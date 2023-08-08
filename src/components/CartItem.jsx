@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from 'react'
 import { useContext } from "react";
 import {Store} from "../app/utils/Store"
@@ -9,6 +10,7 @@ export default function({ item,addBill,removeItemFromCart  }) {
     function handleRemoveFromCart() {
         removeItemFromCart(item.id)
         dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+        toast.success('Item removed from cart',{autoClose: 1000,});
     }
     useEffect(()=>{
         updateCartHandler();

@@ -1,4 +1,4 @@
-'use client';
+
 import './globals.css'
 import { Inter } from 'next/font/google'
 import { StoreProvider } from './utils/Store'
@@ -16,8 +16,8 @@ export default function RootLayout({ children }) {
   return (
     <StoreProvider>
     <html lang="en">
-      <ToastContainer position="bottom-center" limit={1} />
       <body className={inter.className}>{children}
+      <ToastContainer position="bottom-center"  />
       </body>
     </html>
     </StoreProvider>

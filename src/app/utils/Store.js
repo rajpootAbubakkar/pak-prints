@@ -1,3 +1,4 @@
+'use client';
 import { createContext } from 'react';
 import Cookies from 'js-cookie';
 import { useReducer } from 'react';

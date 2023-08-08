@@ -25,6 +25,16 @@ export default function page() {
         delete updatedBill[`Item${itemId}`];
         setBill(updatedBill);
       };
+    const sendWhatsappmsg = () => {
+        // Implement logic to send the bill to the whatsapp number
+        // Use the bill state to get the bill
+        // Use the whatsapp api to send the message
+        // Use the whatsapp api to send the message
+        const msg = Object.entries(bill).map(([itemName, amount]) => `${itemName}: ${amount}`).join('\n');
+        const url = `https://wa.me/923073021756?text=${encodeURIComponent(msg)}`;
+        
+        
+    }
 
       
   return cartItems.length === 0 ? (
@@ -75,7 +85,7 @@ export default function page() {
             {/* <p className="text-sm text-gray-700">including VAT</p> */}
           </div>
         </div>
-        <button className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+        <button onClick={sendWhatsappmsg} className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
       </div>
     </div>
   </div>
