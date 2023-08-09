@@ -1,13 +1,15 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Store } from "../utils/Store";
 import CartItem from "../../components/CartItem";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 
 export default function page() {
-    const { state } = useContext(Store);
+
+    const { state,dispatch } = useContext(Store);
     const {
         cart: { cartItems },
       } = state;
@@ -25,20 +27,36 @@ export default function page() {
         delete updatedBill[`Item${itemId}`];
         setBill(updatedBill);
       };
+    const handleEmptyCart = () => {
+        // Implement logic to empty the cart
+        // Empty the bill state
+        dispatch({ type: 'CART_CLEAR_ITEMS',payload:null });
+        setBill({});
+        toast.success('Cart emptied',{autoClose: 1000,});
+    };
     const sendWhatsappmsg = () => {
         // Implement logic to send the bill to the whatsapp number
         // Use the bill state to get the bill
-        // Use the whatsapp api to send the message
-        // Use the whatsapp api to send the message
+
         const msg = Object.entries(bill).map(([itemName, amount]) => `${itemName}: ${amount}`).join('\n');
         const url = `https://wa.me/923073021756?text=${encodeURIComponent(msg)}`;
-        
+
         
     }
+    const [initialRenderComplete, setInitialRenderComplete] =useState(false);
+    // This useEffect will only run once, during the first render
+   useEffect(() => {
+      // Updating a state causes a re-render
+      setInitialRenderComplete(true);
+    }, []);
+    // initialRenderComplete will be false on the first render and true on all following renders
+    if (!initialRenderComplete) {
+     return null;
+    } else
 
       
   return cartItems.length === 0 ? (
-    <div className="h-screen bg-gray-100 pt-20">
+    <div className="h-screen bg-white pt-20">
     <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
     <h2 className="mb-10 text-center text-xl ">
       Nothing in cart.{" "}
@@ -50,17 +68,17 @@ export default function page() {
   ) :
 
   (
-    <div className="h-screen bg-gray-100 pt-20">
+    <div className="h-screen bg-white pt-20">
     <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
     <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
       <div className="rounded-lg md:w-2/3">
       { (
         cartItems.map((item) =>{ 
-        return <CartItem key={item.id} item={...item}  removeItemFromCart={removeItemFromCart}  addBill={updateBill} />}
+        return <CartItem key={item.id} itm={...item}  removeItemFromCart={removeItemFromCart}  addBill={updateBill} />}
         )
       )}
       </div>
-      <div className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3">
+      <div className="mt-6 h-full rounded-lg border bg-gray-100 p-6 shadow-md md:mt-0 md:w-1/3">
       {Object.entries(bill).map(([, amount],ind) => (
         <div key={ind} className="mb-2 flex justify-between">
         <p className="text-gray-700">ITEM {ind+1}</p>
@@ -86,6 +104,7 @@ export default function page() {
           </div>
         </div>
         <button onClick={sendWhatsappmsg} className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+        <button onClick={handleEmptyCart} className="mt-6 w-full rounded-md bg-red-500 py-1.5 font-medium text-blue-50 hover:bg-red-600">Empty Cart</button>
       </div>
     </div>
   </div>
