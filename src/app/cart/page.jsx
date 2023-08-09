@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import { Store } from "../utils/Store";
-import CartItem from "../../components/CartItem";
+import CartItem from "../components/CartItem";
 import Link from "next/link";
 import { toast } from "react-toastify";
 

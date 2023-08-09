@@ -2,13 +2,15 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams, usePathname } from 'next/navigation'
+import { useSearchParams, usePathname } from "next/navigation";
 import { products } from "../data/products";
 
 function Products() {
   const searchParams = useSearchParams();
   const [productList, setProductList] = useState([]);
-  const [sort, setSort] = useState(searchParams.get('sort') || '');
+  const [sort, setSort] = useState(searchParams.get("sort") || "");
+  const [query, setQuery] = useState(searchParams.get("query") || "");
+
   const [uniquecategory, setUniqueCategory] = useState([]);
   const [checkedcategory, setCheckedCategory] = useState(new Set());
   const pathname = usePathname();
@@ -23,7 +25,6 @@ function Products() {
     setIsOpen(!isOpen);
   };
 
-
   useEffect(() => {
     const uniqueCategories = new Set();
     products.forEach((product) => {
@@ -31,24 +32,26 @@ function Products() {
     });
     const uniqueCategoriesArray = Array.from(uniqueCategories);
     setUniqueCategory(uniqueCategoriesArray);
-  }, [])
+  }, []);
 
   useEffect(() => {
+    let filteredproducts = products;
+
     if (sort) {
-      setProductList(products.sort((a, b) => {
-        if (sort === 'lowest') {
+      filteredproducts = products.sort((a, b) => {
+        if (sort === "lowest") {
           if (a.price > b.price) {
             return 1;
           } else {
             return -1;
           }
-        } else if (sort === 'highest') {
+        } else if (sort === "highest") {
           if (a.price < b.price) {
             return 1;
           } else {
             return -1;
           }
-        } else if (sort === 'toprated') {
+        } else if (sort === "toprated") {
           if (a.rating < b.rating) {
             return 1;
           } else {
@@ -57,11 +60,18 @@ function Products() {
         } else {
           return 1;
         }
-      }))
-    } else {
-      setProductList(products);
+      });
     }
-  }, [sort])
+    if (query) {
+      filteredproducts = filteredproducts.filter(
+        (product) =>
+          product.title.toLowerCase().includes(query.toLowerCase()) ||
+          product.brand.toLowerCase().includes(query.toLowerCase()) ||
+          product.category.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+    setProductList(filteredproducts);
+  }, [sort, query]);
 
   function handleCategoryChange(e, category) {
     const updatedCategories = new Set(checkedcategory); // Create a copy of the Set
@@ -71,29 +81,37 @@ function Products() {
       updatedCategories.delete(category); // Remove the category from the copied Set
     }
     setCheckedCategory(updatedCategories);
-    setProductList(()=>{
-      const filterproducts= products.filter((product) => {
+    setProductList(() => {
+      let filterproducts = products.filter((product) => {
         if (updatedCategories.size === 0) {
           return true;
         } else {
           return updatedCategories.has(product.category);
         }
-      })
+      });
+      if (query) {
+        filterproducts = filterproducts.filter(
+          (product) =>
+            product.title.toLowerCase().includes(query.toLowerCase()) ||
+            product.brand.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase())
+        );
+      }
 
-      const sortedproducts=filterproducts.sort((a, b) => {
-        if (sort === 'lowest') {
+      const sortedproducts = filterproducts.sort((a, b) => {
+        if (sort === "lowest") {
           if (a.price > b.price) {
             return 1;
           } else {
             return -1;
           }
-        } else if (sort === 'highest') {
+        } else if (sort === "highest") {
           if (a.price < b.price) {
             return 1;
           } else {
             return -1;
           }
-        } else if (sort === 'toprated') {
+        } else if (sort === "toprated") {
           if (a.rating < b.rating) {
             return 1;
           } else {
@@ -102,22 +120,27 @@ function Products() {
         } else {
           return 1;
         }
-      })
+      });
       return sortedproducts;
-    }
-      
-    )
+    });
   }
 
   return (
     <>
-      <div className="bg-white">
+      <div
+        onClick={() => {
+          isOpen && setIsOpen(false);
+        }}
+        className="bg-white"
+      >
         <div>
           <div
-            className={`relative z-40 xl:hidden lg:hidden ${!menuOpen &&'hidden'}`}
+            className={`relative z-40 xl:hidden lg:hidden ${
+              !menuOpen && "hidden"
+            }`}
             role="dialog"
             aria-modal="true"
-           >
+          >
             <div className="fixed inset-0 bg-black bg-opacity-25" />
             <div className="fixed inset-0 z-40 flex">
               <div className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
@@ -147,9 +170,6 @@ function Products() {
                 </div>
                 {/* Filters */}
                 <form className="mt-4 border-t border-gray-200">
-                  
-                  
-
                   <div className="border-t border-gray-200 px-4 py-6">
                     <h3 className="-mx-2 -my-3 flow-root">
                       {/* Expand/collapse section button */}
@@ -191,28 +211,27 @@ function Products() {
                     {/* Filter section, show/hide based on section state. */}
                     <div className="pt-6" id="filter-section-mobile-1">
                       <div className="space-y-6">
-                        {
-                          uniquecategory.map((category, ind) => (
-                            <div key={category} className="flex items-center">
-                              <input
-                                id={category + ind}
-                                name="category[]"
-                                value={category}
-                                checked={checkedcategory.has(category)}
-                                onChange={(e) => handleCategoryChange(e, category)}
-                                type="checkbox"
-                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                              />
-                              <label
-                                htmlFor={category + ind}
-                                className="ml-3 min-w-0 flex-1 text-gray-500"
-                              >
-                                {category}
-                              </label>
-                            </div>
-                          ))
-                        }
-
+                        {uniquecategory.map((category, ind) => (
+                          <div key={category} className="flex items-center">
+                            <input
+                              id={category + ind}
+                              name="category[]"
+                              value={category}
+                              checked={checkedcategory.has(category)}
+                              onChange={(e) =>
+                                handleCategoryChange(e, category)
+                              }
+                              type="checkbox"
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <label
+                              htmlFor={category + ind}
+                              className="ml-3 min-w-0 flex-1 text-gray-500"
+                            >
+                              {category}
+                            </label>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -221,7 +240,7 @@ function Products() {
             </div>
           </div>
           <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+            <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900">
                 New Arrivals
               </h1>
@@ -261,8 +280,14 @@ function Products() {
                     >
                       <div className="py-1" role="none">
                         <a
-                          href="/products"
-                          className={(sort === "" ? "font-medium text-gray-900 block px-4 py-2 text-sm" : "text-gray-500 block px-4 py-2 text-sm")}
+                          href={`/products?${
+                            query ? `query=${query}&` : ""
+                          }sort=`}
+                          className={
+                            sort === ""
+                              ? "font-medium text-gray-900 block px-4 py-2 text-sm"
+                              : "text-gray-500 block px-4 py-2 text-sm"
+                          }
                           role="menuitem"
                           tabIndex={-1}
                           id="menu-item-0"
@@ -270,8 +295,14 @@ function Products() {
                           Most Popular
                         </a>
                         <a
-                          href="/products?sort=toprated"
-                          className={(sort === "toprated" ? "font-medium text-gray-900 block px-4 py-2 text-sm" : "text-gray-500 block px-4 py-2 text-sm")}
+                          href={`/products?sort=toprated${
+                            query ? `&query=${query}` : ""
+                          }`}
+                          className={
+                            sort === "toprated"
+                              ? "font-medium text-gray-900 block px-4 py-2 text-sm"
+                              : "text-gray-500 block px-4 py-2 text-sm"
+                          }
                           role="menuitem"
                           tabIndex={-1}
                           id="menu-item-1"
@@ -280,8 +311,14 @@ function Products() {
                         </a>
 
                         <a
-                          href="/products?sort=lowest"
-                          className={(sort === "lowest" ? "font-medium text-gray-900 block px-4 py-2 text-sm" : "text-gray-500 block px-4 py-2 text-sm")}
+                          href={`/products?sort=lowest${
+                            query ? `&query=${query}` : ""
+                          }`}
+                          className={
+                            sort === "lowest"
+                              ? "font-medium text-gray-900 block px-4 py-2 text-sm"
+                              : "text-gray-500 block px-4 py-2 text-sm"
+                          }
                           role="menuitem"
                           tabIndex={-1}
                           id="menu-item-3"
@@ -289,8 +326,14 @@ function Products() {
                           Price: Low to High
                         </a>
                         <a
-                          href="/products?sort=highest"
-                          className={(sort === "highest" ? "font-medium text-gray-900 block px-4 py-2 text-sm" : "text-gray-500 block px-4 py-2 text-sm")}
+                          href={`/products?sort=highest${
+                            query ? `&query=${query}` : ""
+                          }`}
+                          className={
+                            sort === "highest"
+                              ? "font-medium text-gray-900 block px-4 py-2 text-sm"
+                              : "text-gray-500 block px-4 py-2 text-sm"
+                          }
                           role="menuitem"
                           tabIndex={-1}
                           id="menu-item-4"
@@ -388,38 +431,47 @@ function Products() {
                     {/* Filter section, show/hide based on section state. */}
                     <div className="pt-6" id="filter-section-1">
                       <div className="space-y-4">
-                        {
-                          uniquecategory.map((category, ind) => (
-                            <div key={category} className="flex items-center">
-                              <input
-                                id={category + ind + "1"}
-                                name="category[]"
-                                value={category}
-                                checked={checkedcategory.has(category)}
-                                onChange={(e) => handleCategoryChange(e, category)}
-                                type="checkbox"
-                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                              />
-                              <label
-                                htmlFor={category + ind + "1"}
-                                className="ml-3 text-sm text-gray-600"
-                              >
-                                {category}
-                              </label>
-                            </div>
-                          ))
-                        }
-
+                        {uniquecategory.map((category, ind) => (
+                          <div key={category} className="flex items-center">
+                            <input
+                              id={category + ind + "1"}
+                              name="category[]"
+                              value={category}
+                              checked={checkedcategory.has(category)}
+                              onChange={(e) =>
+                                handleCategoryChange(e, category)
+                              }
+                              type="checkbox"
+                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <label
+                              htmlFor={category + ind + "1"}
+                              className="ml-3 text-sm text-gray-600"
+                            >
+                              {category}
+                            </label>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
-                  
                 </form>
                 {/* Product grid */}
                 <div className="lg:col-span-3">
                   {/* Your content */}
                   <div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8">
                     <div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
+                      <div className="bg-gray-100 flex rounded  items-center">
+                        {productList.length === 0 ? "No" : productList.length}{" "}
+                        Results
+                        {query && query !== "" && " : " + query}
+                        &nbsp;
+                        {query && query !== "" ? (
+                          <a href="/products">
+                            <svg className="h-7 w-7" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 64 64" width="48px" height="48px"><path d="M32,10c12.15,0,22,9.85,22,22s-9.85,22-22,22s-22-9.85-22-22S19.85,10,32,10z M36.95,39.778	c0.781,0.781,2.047,0.781,2.828,0c0.781-0.781,0.781-2.047,0-2.828c-0.175-0.175-2.767-2.767-4.95-4.95	c2.183-2.183,4.774-4.774,4.95-4.95c0.781-0.781,0.781-2.047,0-2.828c-0.781-0.781-2.047-0.781-2.828,0	c-0.175,0.175-2.767,2.767-4.95,4.95c-2.183-2.183-4.775-4.775-4.95-4.95c-0.781-0.781-2.047-0.781-2.828,0	c-0.781,0.781-0.781,2.047,0,2.828c0.175,0.175,2.767,2.767,4.95,4.95c-2.183,2.183-4.774,4.774-4.95,4.95	c-0.781,0.781-0.781,2.047,0,2.828c0.781,0.781,2.047,0.781,2.828,0c0.175-0.175,2.767-2.767,4.95-4.95	C34.183,37.011,36.775,39.603,36.95,39.778z"/></svg>
+                          </a>
+                        ) : null}
+                      </div>
                       <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                         Trending products
                       </h2>

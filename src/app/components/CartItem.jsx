@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useContext } from "react";
-import {Store} from "../app/utils/Store";
+import {Store} from "../utils/Store";
 import { toast } from 'react-toastify';
-import { products } from "../app/data/products";
+import { products } from "../data/products";
 
 export default function({ itm,addBill,removeItemFromCart  }) {
 
