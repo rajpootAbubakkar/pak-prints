@@ -545,13 +545,13 @@ export const products = [
     stock: 7,
     brand: "luxury palace",
     category: "home-decoration",
-    thumbnail: "https://i.dummyjson.com/data/products/29/thumbnail.webp",
+    thumbnail: "https://i.dummyjson.com/data/products/29/1.jpg",
     images: [
       "https://i.dummyjson.com/data/products/29/1.jpg",
       "https://i.dummyjson.com/data/products/29/2.jpg",
       "https://i.dummyjson.com/data/products/29/3.webp",
       "https://i.dummyjson.com/data/products/29/4.webp",
-      "https://i.dummyjson.com/data/products/29/thumbnail.webp",
+      
     ],
   },
   {
