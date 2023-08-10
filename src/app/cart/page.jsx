@@ -35,12 +35,6 @@ export default function page() {
         toast.success('Cart emptied',{autoClose: 1000,});
     };
     const sendWhatsappmsg = () => {
-        // Implement logic to send the bill to the whatsapp number
-        // Use the bill state to get the bill
-
-        const msg = Object.entries(bill).map(([itemName, amount]) => `${itemName}: ${amount}`).join('\n');
-        const url = `https://wa.me/923073021756?text=${encodeURIComponent(msg)}`;
-
         
     }
     const [initialRenderComplete, setInitialRenderComplete] =useState(false);
