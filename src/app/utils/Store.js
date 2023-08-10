@@ -6,7 +6,7 @@ import { useReducer } from 'react';
 export const Store = createContext();
 
 const initialState = {
-  cart:  Cookies.get('pak_prints_cart')
+  cart: Cookies.get('pak_prints_cart')
     ? JSON.parse(Cookies.get('pak_prints_cart'))
     : { cartItems: [], shippingAddress: {} },
 };
@@ -20,8 +20,8 @@ function reducer(state, action) {
       );
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item.id === existItem.id ? newItem : item
-          )
+          item.id === existItem.id ? newItem : item
+        )
         : [...state.cart.cartItems, newItem];
       Cookies.set('pak_prints_cart', JSON.stringify({ ...state.cart, cartItems }));
       return { ...state, cart: { ...state.cart, cartItems } };
@@ -40,9 +40,9 @@ function reducer(state, action) {
           cartItems: [],
           shippingAddress: { location: {} },
         },
-    };
-    case 'CART_CLEAR_ITEMS':{
-    Cookies.set('pak_prints_cart', JSON.stringify({ ...state.cart, cartItems: [] }));
+      };
+    case 'CART_CLEAR_ITEMS': {
+      Cookies.set('pak_prints_cart', JSON.stringify({ ...state.cart, cartItems: [] }));
       return { ...state, cart: { ...state.cart, cartItems: [] } };
     }
     case 'SAVE_SHIPPING_ADDRESS':

@@ -2,9 +2,9 @@
 import { useParams } from "next/navigation";
 import { products } from "../../data/products";
 import { useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import {Store} from "../../utils/Store"
+import { Store } from "../../utils/Store";
 import { toast } from "react-toastify";
 
 function Product() {
@@ -16,8 +16,7 @@ function Product() {
   const [selectedImage, setSelectedImage] = useState(product.thumbnail);
   const {
     cart: { cartItems },
-  } = state; 
-
+  } = state;
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -25,16 +24,15 @@ function Product() {
   // console.log(product);
   const addToCartHandler = async (e) => {
     e.preventDefault();
-    if(cartItems.find((item) => item.id === product.id)){
-      toast.info("Item already in cart",{autoClose: 1000,});
-    }else{
+    if (cartItems.find((item) => item.id === product.id)) {
+      toast.info("Item already in cart", { autoClose: 1000 });
+    } else {
       const quantity = 1;
-      dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
-      toast.success("Item added to cart",{autoClose: 1000,});
+      dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+      toast.success("Item added to cart", { autoClose: 1000 });
     }
-    router.push('/cart');
+    router.push("/cart");
   };
-
 
   return (
     <>

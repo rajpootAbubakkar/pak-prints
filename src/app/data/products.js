@@ -551,7 +551,7 @@ export const products = [
       "https://i.dummyjson.com/data/products/29/2.jpg",
       "https://i.dummyjson.com/data/products/29/3.webp",
       "https://i.dummyjson.com/data/products/29/4.webp",
-      
+
     ],
   },
   {

@@ -135,9 +135,8 @@ function Products() {
       >
         <div>
           <div
-            className={`relative z-40 xl:hidden lg:hidden ${
-              !menuOpen && "hidden"
-            }`}
+            className={`relative z-40 xl:hidden lg:hidden ${!menuOpen && "hidden"
+              }`}
             role="dialog"
             aria-modal="true"
           >
@@ -280,9 +279,8 @@ function Products() {
                     >
                       <div className="py-1" role="none">
                         <a
-                          href={`/products?${
-                            query ? `query=${query}&` : ""
-                          }sort=`}
+                          href={`/products?${query ? `query=${query}&` : ""
+                            }sort=`}
                           className={
                             sort === ""
                               ? "font-medium text-gray-900 block px-4 py-2 text-sm"
@@ -295,9 +293,8 @@ function Products() {
                           Most Popular
                         </a>
                         <a
-                          href={`/products?sort=toprated${
-                            query ? `&query=${query}` : ""
-                          }`}
+                          href={`/products?sort=toprated${query ? `&query=${query}` : ""
+                            }`}
                           className={
                             sort === "toprated"
                               ? "font-medium text-gray-900 block px-4 py-2 text-sm"
@@ -311,9 +308,8 @@ function Products() {
                         </a>
 
                         <a
-                          href={`/products?sort=lowest${
-                            query ? `&query=${query}` : ""
-                          }`}
+                          href={`/products?sort=lowest${query ? `&query=${query}` : ""
+                            }`}
                           className={
                             sort === "lowest"
                               ? "font-medium text-gray-900 block px-4 py-2 text-sm"
@@ -326,9 +322,8 @@ function Products() {
                           Price: Low to High
                         </a>
                         <a
-                          href={`/products?sort=highest${
-                            query ? `&query=${query}` : ""
-                          }`}
+                          href={`/products?sort=highest${query ? `&query=${query}` : ""
+                            }`}
                           className={
                             sort === "highest"
                               ? "font-medium text-gray-900 block px-4 py-2 text-sm"
@@ -460,21 +455,28 @@ function Products() {
                 <div className="lg:col-span-3">
                   {/* Your content */}
                   <div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8">
-                  <div className=" flex rounded justify-center  items-center">
-                        <div className="bg-gray-100 flex rounded">
+                    <div className=" flex rounded justify-center  items-center">
+                      <div className="bg-gray-100 flex rounded">
                         {productList.length === 0 ? "No" : productList.length}{" "}
                         Results
                         {query && query !== "" && " : " + query}
                         &nbsp;
                         {query && query !== "" ? (
                           <a href="/products">
-                            <svg className="h-7 w-7" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 64 64" width="48px" height="48px"><path d="M32,10c12.15,0,22,9.85,22,22s-9.85,22-22,22s-22-9.85-22-22S19.85,10,32,10z M36.95,39.778	c0.781,0.781,2.047,0.781,2.828,0c0.781-0.781,0.781-2.047,0-2.828c-0.175-0.175-2.767-2.767-4.95-4.95	c2.183-2.183,4.774-4.774,4.95-4.95c0.781-0.781,0.781-2.047,0-2.828c-0.781-0.781-2.047-0.781-2.828,0	c-0.175,0.175-2.767,2.767-4.95,4.95c-2.183-2.183-4.775-4.775-4.95-4.95c-0.781-0.781-2.047-0.781-2.828,0	c-0.781,0.781-0.781,2.047,0,2.828c0.175,0.175,2.767,2.767,4.95,4.95c-2.183,2.183-4.774,4.774-4.95,4.95	c-0.781,0.781-0.781,2.047,0,2.828c0.781,0.781,2.047,0.781,2.828,0c0.175-0.175,2.767-2.767,4.95-4.95	C34.183,37.011,36.775,39.603,36.95,39.778z"/></svg>
+                            <svg
+                              className="h-7 w-7"
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 64 64"
+                              width="48px"
+                              height="48px"
+                            >
+                              <path d="M32,10c12.15,0,22,9.85,22,22s-9.85,22-22,22s-22-9.85-22-22S19.85,10,32,10z M36.95,39.778	c0.781,0.781,2.047,0.781,2.828,0c0.781-0.781,0.781-2.047,0-2.828c-0.175-0.175-2.767-2.767-4.95-4.95	c2.183-2.183,4.774-4.774,4.95-4.95c0.781-0.781,0.781-2.047,0-2.828c-0.781-0.781-2.047-0.781-2.828,0	c-0.175,0.175-2.767,2.767-4.95,4.95c-2.183-2.183-4.775-4.775-4.95-4.95c-0.781-0.781-2.047-0.781-2.828,0	c-0.781,0.781-0.781,2.047,0,2.828c0.175,0.175,2.767,2.767,4.95,4.95c-2.183,2.183-4.774,4.774-4.95,4.95	c-0.781,0.781-0.781,2.047,0,2.828c0.781,0.781,2.047,0.781,2.828,0c0.175-0.175,2.767-2.767,4.95-4.95	C34.183,37.011,36.775,39.603,36.95,39.778z" />
+                            </svg>
                           </a>
                         ) : null}
-                        </div>
                       </div>
+                    </div>
                     <div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
-                      
                       <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                         Trending products
                       </h2>
