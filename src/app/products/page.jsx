@@ -10,25 +10,19 @@ function Products() {
   const [productList, setProductList] = useState([]);
   const [sort, setSort] = useState(searchParams.get("sort") || "");
   const [query, setQuery] = useState(searchParams.get("query") || "");
-  //pagination state
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [productsPerPage, setProductsPerPage] = useState(6);
-  // const indexOfLastProduct = currentPage * productsPerPage;
-  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  // const currentProducts = productList.slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
-  
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  //   handlePagination = (e) => {
-  //   e.preventDefault();
-  //   setCurrentPage(Number(e.target.textContent));
-  // };
-  // const pageNumbers = [];
-  // for (let i = 1; i <= Math.ceil(productList.length / productsPerPage); i++) {
-  //   pageNumbers.push(i);
-  // }
+
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [currentItems,setcurrentItems] = useState([]);
+
+  const totalPages = Math.ceil(productList.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
 
 
   const [uniquecategory, setUniqueCategory] = useState([]);
@@ -93,7 +87,10 @@ function Products() {
     setProductList(filteredproducts);
   }, [sort, query]);
 
+ 
+
   function handleCategoryChange(e, category) {
+    setCurrentPage(1);
     const updatedCategories = new Set(checkedcategory); // Create a copy of the Set
     if (e.target.checked) {
       updatedCategories.add(category); // Add the category to the copied Set
@@ -144,6 +141,9 @@ function Products() {
       return sortedproducts;
     });
   }
+  useEffect(()=>{
+    setcurrentItems(productList.slice(indexOfFirstItem, indexOfLastItem));
+  },[productList,currentPage])
 
   return (
     <>
@@ -515,7 +515,7 @@ function Products() {
                           className="mx-4 flex  justify-center   mx-0 grid sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-12 space-x-0"
                           // className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0"
                         >
-                          {productList.map((product) => {
+                          {currentItems.map((product) => {
                             return (
                               <li
                                 key={product.id}
@@ -556,6 +556,21 @@ function Products() {
 
                           {/* More products... */}
                         </ul>
+                        <div className="mt-4 flex justify-center">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={`mx-2 p-2 rounded ${
+              currentPage === index + 1
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-600'
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
                       </div>
                     </div>
                     <div className="mt-12 flex px-4 sm:hidden">
