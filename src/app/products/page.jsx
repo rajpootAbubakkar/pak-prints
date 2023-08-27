@@ -10,6 +10,26 @@ function Products() {
   const [productList, setProductList] = useState([]);
   const [sort, setSort] = useState(searchParams.get("sort") || "");
   const [query, setQuery] = useState(searchParams.get("query") || "");
+  //pagination state
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [productsPerPage, setProductsPerPage] = useState(6);
+  // const indexOfLastProduct = currentPage * productsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  // const currentProducts = productList.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
+  
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  //   handlePagination = (e) => {
+  //   e.preventDefault();
+  //   setCurrentPage(Number(e.target.textContent));
+  // };
+  // const pageNumbers = [];
+  // for (let i = 1; i <= Math.ceil(productList.length / productsPerPage); i++) {
+  //   pageNumbers.push(i);
+  // }
+
 
   const [uniquecategory, setUniqueCategory] = useState([]);
   const [checkedcategory, setCheckedCategory] = useState(new Set());
@@ -339,7 +359,7 @@ function Products() {
                     </div>
                   )}
                 </div>
-                <button
+                {/* <button
                   type="button"
                   className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
                 >
@@ -356,7 +376,7 @@ function Products() {
                       clipRule="evenodd"
                     />
                   </svg>
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={toggleMenu}
@@ -492,13 +512,14 @@ function Products() {
                       <div className="relative -mb-6 w-full overflow-x-auto pb-6">
                         <ul
                           role="list"
-                          className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0"
+                          className="mx-4 flex  justify-center   mx-0 grid sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-12 space-x-0"
+                          // className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0"
                         >
                           {productList.map((product) => {
                             return (
                               <li
                                 key={product.id}
-                                className="inline-flex w-64 flex-col text-center lg:w-auto"
+                                className="inline-flex  w-64  flex-col text-center space-x-3 md:w-auto lg:w-auto"
                               >
                                 <Link
                                   href={{
@@ -511,7 +532,7 @@ function Products() {
                                       <img
                                         src={product.images[0]}
                                         alt="Black machined steel pen with hexagonal grip and small white logo at top."
-                                        className="h-60 w-60 object-center group-hover:opacity-75"
+                                        className="h-60 w-full object-center group-hover:opacity-75"
                                       />
                                     </div>
                                     <div className="mt-6">

@@ -66,7 +66,9 @@ function Product() {
                             <img
                               src={image}
                               alt=""
-                              className="h-full w-full object-cover object-center"
+                              
+                              
+                              className="h-full w-full object-contain object-center"
                             />
                           </span>
                           {/* Selected: "ring-indigo-500", Not Selected: "ring-transparent" */}
@@ -87,12 +89,19 @@ function Product() {
                     aria-labelledby="tabs-1-tab-1"
                     role="tabpanel"
                     tabIndex={0}
+                    
                   >
                     <img
                       width={545}
                       src={selectedImage}
                       alt="Angled front view with bag zipped and handles upright."
-                      className="w-[545px] h-[310px]  object-cover object-center sm:rounded-lg"
+                      
+
+
+                      // className="w-[545px] h-[310px]  object-cover object-center sm:rounded-lg"
+                      className="w-[545px] h-[310px] object-center  object-contain sm:rounded-lg"
+
+
                     />
                   </div>
                   {/* More images... */}
