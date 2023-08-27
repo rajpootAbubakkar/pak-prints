@@ -11,6 +11,20 @@ function Products() {
   const [sort, setSort] = useState(searchParams.get("sort") || "");
   const [query, setQuery] = useState(searchParams.get("query") || "");
 
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [currentItems,setcurrentItems] = useState([]);
+
+  const totalPages = Math.ceil(productList.length / itemsPerPage);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+
+
   const [uniquecategory, setUniqueCategory] = useState([]);
   const [checkedcategory, setCheckedCategory] = useState(new Set());
   const pathname = usePathname();
@@ -73,7 +87,10 @@ function Products() {
     setProductList(filteredproducts);
   }, [sort, query]);
 
+ 
+
   function handleCategoryChange(e, category) {
+    setCurrentPage(1);
     const updatedCategories = new Set(checkedcategory); // Create a copy of the Set
     if (e.target.checked) {
       updatedCategories.add(category); // Add the category to the copied Set
@@ -124,6 +141,9 @@ function Products() {
       return sortedproducts;
     });
   }
+  useEffect(()=>{
+    setcurrentItems(productList.slice(indexOfFirstItem, indexOfLastItem));
+  },[productList,currentPage])
 
   return (
     <>
@@ -240,7 +260,7 @@ function Products() {
           </div>
           <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12">
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+              <h1 className="sm:text-3xl xs:text-2xl md:text-4xl lg:text-4xl font-bold tracking-tight text-gray-900">
                 New Arrivals
               </h1>
               <div className="flex items-center">
@@ -339,7 +359,7 @@ function Products() {
                     </div>
                   )}
                 </div>
-                <button
+                {/* <button
                   type="button"
                   className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
                 >
@@ -356,7 +376,7 @@ function Products() {
                       clipRule="evenodd"
                     />
                   </svg>
-                </button>
+                </button> */}
                 <button
                   type="button"
                   onClick={toggleMenu}
@@ -492,13 +512,14 @@ function Products() {
                       <div className="relative -mb-6 w-full overflow-x-auto pb-6">
                         <ul
                           role="list"
-                          className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0"
+                          className="mx-4 flex  justify-center   mx-0 grid sm:grid-cols-2 xs:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-12 space-x-0"
+                          // className="mx-4 inline-flex space-x-8 sm:mx-6 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-x-0"
                         >
-                          {productList.map((product) => {
+                          {currentItems.map((product) => {
                             return (
                               <li
                                 key={product.id}
-                                className="inline-flex w-64 flex-col text-center lg:w-auto"
+                                className="inline-flex  w-64  flex-col text-center space-x-3 md:w-auto lg:w-auto"
                               >
                                 <Link
                                   href={{
@@ -511,7 +532,7 @@ function Products() {
                                       <img
                                         src={product.images[0]}
                                         alt="Black machined steel pen with hexagonal grip and small white logo at top."
-                                        className="h-60 w-60 object-center group-hover:opacity-75"
+                                        className="h-60 w-full object-center group-hover:opacity-75"
                                       />
                                     </div>
                                     <div className="mt-6">
@@ -535,6 +556,21 @@ function Products() {
 
                           {/* More products... */}
                         </ul>
+                        <div className="mt-4 flex justify-center">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={`mx-2 p-2 rounded ${
+              currentPage === index + 1
+                ? 'bg-blue-500 text-white'
+                : 'bg-gray-200 text-gray-600'
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
                       </div>
                     </div>
                     <div className="mt-12 flex px-4 sm:hidden">

@@ -16,13 +16,13 @@ export default function Header() {
 
   return (
     <header>
-      <nav className="flex h-20 bg-gray-100 items-center px-4 justify-between shadow-md">
+      <nav className=" flex h-16 bg-gray-100 items-center px-4 justify-between shadow-md">
         <Link href="/products">
           <div className="text-lg font-bold">PakPrints</div>
         </Link>
         <form
           action={query ? `/products?query=${query}` : "/products"}
-          className="mx-auto  hidden w-full justify-center md:flex"
+          className="mx-auto  hidden w-full justify-center sm:flex"
         >
           <input
             onChange={(e) => setQuery(e.target.value)}
@@ -54,12 +54,20 @@ export default function Header() {
         </form>
         <div>
           <Link href="/cart">
-            <div className="p-2">
+            <div className="p-2 relative flex">
+              <span className="sm:flex hidden">
               Cart
+              </span>
+              <svg class="flex-1 w-8 h-8 fill-current">
+                <path d="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z"/>
+              </svg>
+              
               {length > 0 && (
-                <span className="ml-1 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
-                  {length}
-                </span>
+                // <span className="ml-1 h-5 rounded-full bg-red-600 px-2 py-1 text-xs font-bold text-white">
+                //   {length}
+                // </span>
+                <span class="absolute right-0 top-0 rounded-full bg-red-600 w-4 h-4 top right p-0 m-0 text-white font-mono text-sm  leading-tight text-center">{length}
+              </span>
               )}
             </div>
           </Link>
