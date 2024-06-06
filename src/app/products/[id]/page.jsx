@@ -36,7 +36,7 @@ function Product() {
 
   return (
     <>
-      <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-6 sm:py-12">
+      <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-white py-6 sm:py-12">
         <div className="bg-white">
           <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
@@ -66,7 +66,9 @@ function Product() {
                             <img
                               src={image}
                               alt=""
-                              className="h-full w-full object-cover object-center"
+                              
+                              
+                              className="h-full w-full object-contain object-center"
                             />
                           </span>
                           {/* Selected: "ring-indigo-500", Not Selected: "ring-transparent" */}
@@ -87,12 +89,19 @@ function Product() {
                     aria-labelledby="tabs-1-tab-1"
                     role="tabpanel"
                     tabIndex={0}
+                    
                   >
                     <img
                       width={545}
                       src={selectedImage}
                       alt="Angled front view with bag zipped and handles upright."
-                      className="w-[545px] h-[310px]  object-cover object-center sm:rounded-lg"
+                      
+
+
+                      // className="w-[545px] h-[310px]  object-cover object-center sm:rounded-lg"
+                      className="w-[545px] h-[310px] object-center  object-contain sm:rounded-lg"
+
+
                     />
                   </div>
                   {/* More images... */}

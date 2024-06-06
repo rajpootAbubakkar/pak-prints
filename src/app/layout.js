@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <StoreProvider>
       <html lang="en">
         <body className={inter.className}>
-          <Header />
+          <Header  />
           <ToastContainer position="bottom-center" />
           {children}
         </body>
